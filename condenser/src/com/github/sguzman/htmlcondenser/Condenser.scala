@@ -102,9 +102,9 @@ object Condenser {
                                  omitJS: Boolean = true,
                                  omitCSS: Boolean = true,
                                  omitHead: Boolean = true) = {
-    condenseExcludeNodes(doc.body,
+    "<html><body>" ++ condenseExcludeNodes(doc.body,
       setFromStringBools(List(("script", omitJS), ("style", omitCSS), ("head", omitHead)))
-    )
+    ) ++ "</body></html>"
   }
 
   private implicit final class DocWrap(element: Document#ElementType) {
