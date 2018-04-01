@@ -21,7 +21,15 @@ class CondenserTest extends FlatSpec {
     testExample("comments")
   }
 
-  "An HTML condenser" should "handle simple input" in {
+  "An HTML condenser" should "condense simple input" in {
     testExample("simple")
+  }
+
+  "An HTHML condenser" should "condense github's HTML5 template" in {
+    testExample("github-html5-template")
+  }
+
+  "An HTML condenser" should "condense's facebook's page" in {
+    testExample("facebook-03-31-18")
   }
 }
