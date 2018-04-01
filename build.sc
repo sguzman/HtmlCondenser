@@ -1,0 +1,79 @@
+import mill._
+import mill.scalalib._
+import coursier.maven.MavenRepository
+import publish._
+import java.io.File
+
+object condenser extends PublishModule {
+  /** Publish version */
+  def publishVersion = "1.0.0"
+
+  /** Define maven POM for publishing */
+  def pomSettings = PomSettings(
+    description = "While working on a web scraping project, I ran into issues when caching HTTP responses. The html was not minified and contained superfluous nodes such as &lt;script> and &lt;style>. This project is an attempt to make HTML documents more cacheable friendly",
+    organization = "com.github.sguzman",
+    url = "https://github.com/sguzman/HtmlCondenser",
+    licenses = Seq(License.Unlicense),
+    versionControl = VersionControl.github("sguzman", "HtmlCondenser"),
+    developers = Seq(
+      Developer("sguzman", "Salvador Guzman","https://github.com/sguzman")
+    )
+  )
+
+  /** Custom task to clean out/condenser */
+  def clean() = T.command{
+    def delete(file: File): Unit = {
+      if (file.exists)
+        if (file.isDirectory)
+          Option(file.listFiles).map(_.toList).getOrElse(Nil).foreach(delete)
+        else file.delete()
+
+    }
+
+    delete(new File("./out/condenser"))
+  }
+
+  /** Name of project */
+  def name = "HtmlCondenser"
+
+  /** Organization */
+  def organization = "com.github.sguzman"
+
+  /** Project version */
+  def version = "1.0"
+
+  /** Scala version */
+  def scalaVersion = "2.12.4"
+
+  /** Scalac parameters */
+  def scalacOptions = Seq("-Ydelambdafy:inline", "-feature", "-unchecked", "-deprecation", "-encoding", "utf8")
+
+  /** Javac parameters */
+  def javacOptions = Seq("-server")
+
+  /** Resolvers */
+  def repositories = super.repositories ++ Seq(
+    MavenRepository("https://repo1.maven.org/maven2"),
+    MavenRepository("https://oss.sonatype.org/content/repositories/public"),
+    MavenRepository("https://repo.typesafe.com/typesafe/releases"),
+    MavenRepository("https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases"),
+    MavenRepository("https://oss.sonatype.org/content/repositories/releases"),
+    MavenRepository("https://oss.sonatype.org/content/repositories/snapshots"),
+    MavenRepository("https://jcenter.bintray.com")
+  )
+
+  /** Test suite */
+  object test extends Tests{
+    /** Test Framework */
+    def testFrameworks = Seq("org.scalatest.tools.Framework")
+    /** Ivy dependencies */
+    def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.0.4")
+  }
+
+  /** Ivy dependencies */
+  def ivyDeps = Agg(
+    ivy"com.outr::scribe:2.2.1"
+  )
+
+  def forkArgs = Seq("-Xmx4g")
+}
