@@ -28,6 +28,7 @@ import scalaj.http.Http
   * <ul>
   *   <li>Remove comments</li>
   *   <li>Remove non-significant whitespace</li>
+  *   <li>Remove empty tags</li>
   * </ul>
   * <p>
   * The following operations are treated as optional:
@@ -73,11 +74,17 @@ object Condenser {
     * @see             Condenser
     * @since           1.0.0
     */
-  def condenseURL(url: URL, omitJS: Boolean = true, omitCSS: Boolean = true, omitHead: Boolean = true): String = {
+  def condenseURL(url: URL,
+                  omitJS: Boolean = true,
+                  omitCSS: Boolean = true,
+                  omitHead: Boolean = true): String = {
     condenseString(Http(url.toString).asString.body, omitJS, omitCSS, omitHead)
   }
 
-  def condenseString(html: String, omitJS: Boolean = true, omitCSS: Boolean = true, omitHead: Boolean = true): String = {
+  def condenseString(html: String,
+                     omitJS: Boolean = true,
+                     omitCSS: Boolean = true,
+                     omitHead: Boolean = true): String = {
     condenseJsoup(JsoupBrowser().parseString(html), omitJS, omitCSS, omitCSS)
   }
 
@@ -87,15 +94,16 @@ object Condenser {
     else
       Set.empty[String]
 
+  private def setFromStringBools(values: Seq[(String, Boolean)) =
+    values.map(a => stringSetOnTrue(a._1, a._2)).reduce(_ ++ _)
+
 
   private def condenseJsoup(doc: Browser#DocumentType,
                                  omitJS: Boolean = true,
                                  omitCSS: Boolean = true,
                                  omitHead: Boolean = true) = {
     condenseExcludeNodes(doc.body,
-      stringSetOnTrue("style", omitJS) ++
-        stringSetOnTrue("style", omitCSS) ++
-      stringSetOnTrue("head", omitHead)
+      setFromStringBools(List(("script", omitJS), ("style", omitCSS), ("head", omitHead)))
     )
   }
 
@@ -108,7 +116,7 @@ object Condenser {
     if (doc.in(exclude))
       ""
     else if (doc.children.isEmpty)
-      doc.innerHtml
+      ""
     else
       doc.children.map(a => condenseExcludeNodes(a, exclude)).reduce(_ ++ _)
   }
