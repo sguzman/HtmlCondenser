@@ -110,9 +110,9 @@ object Condenser {
                                  omitJS: Boolean = true,
                                  omitCSS: Boolean = true) =
     if (doc.body.children.isEmpty) "<html><body></body></html>"
-    else "<html><body>" ++ condenseExcludeNodes(doc.body,
+    else "<html>" ++ condenseExcludeNodes(doc.body,
       setFromStringBools(List(("script", omitJS), ("style", omitCSS)))
-    ) ++ "</body></html>"
+    ) ++ "</html>"
 
   private implicit final class DocWrap(element: Document#ElementType) {
     def in(set: Set[String]) = set.contains(element.tagName)
