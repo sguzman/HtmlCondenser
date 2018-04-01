@@ -51,6 +51,11 @@ import scalaj.http.Http
   * libraries used in this application will be handled by me.
   * </p>
   *
+  * <p>
+  *   Note that currently any HTML elements in comments will also be removed since
+  *   its considered optional elements.
+  * </p>
+  *
   * @author Salvador Guzman (guzmansalv@gmail.com)
   * @since 1.0.0
   */
