@@ -29,12 +29,12 @@ import scalaj.http.Http
   *   <li>Remove comments</li>
   *   <li>Remove non-significant whitespace</li>
   *   <li>Remove empty tags</li>
+  *   <li>Remove head node</li>
   * </ul>
   * <p>
   * The following operations are treated as optional:
   * </p>
   * <ul>
-  *   <li>Remove head node</li>
   *   <li>Remove style tags</li>
   *   <li>Remove css tags</li>
   * </ul>
@@ -77,7 +77,6 @@ object Condenser {
     *
     * @param omitJS    should <script></script> tags be omitted?
     * @param omitCSS   should <style></style> tags be omitted?
-    * @param omitHead  should <head></head> tag be omitted?
     *
     * @return          String consisting of condensed HTML
     *
@@ -86,16 +85,14 @@ object Condenser {
     */
   def condenseURL(url: URL,
                   omitJS: Boolean = true,
-                  omitCSS: Boolean = true,
-                  omitHead: Boolean = true): String = {
-    condenseString(Http(url.toString).asString.body, omitJS, omitCSS, omitHead)
+                  omitCSS: Boolean = true): String = {
+    condenseString(Http(url.toString).asString.body, omitJS, omitCSS)
   }
 
   def condenseString(html: String,
                      omitJS: Boolean = true,
-                     omitCSS: Boolean = true,
-                     omitHead: Boolean = true): String = {
-    condenseJsoup(JsoupBrowser().parseString(html), omitJS, omitCSS, omitCSS)
+                     omitCSS: Boolean = true): String = {
+    condenseJsoup(JsoupBrowser().parseString(html), omitJS, omitCSS)
   }
 
   private def stringSetOnTrue(str: String, cond: Boolean) =
@@ -110,10 +107,9 @@ object Condenser {
 
   private def condenseJsoup(doc: Browser#DocumentType,
                                  omitJS: Boolean = true,
-                                 omitCSS: Boolean = true,
-                                 omitHead: Boolean = true) =
+                                 omitCSS: Boolean = true) =
     "<html><body>" ++ condenseExcludeNodes(doc.body,
-      setFromStringBools(List(("script", omitJS), ("style", omitCSS), ("head", omitHead)))
+      setFromStringBools(List(("script", omitJS), ("style", omitCSS)))
     ) ++ "</body></html>"
 
   private implicit final class DocWrap(element: Document#ElementType) {
