@@ -118,6 +118,12 @@ object Condenser {
     def in(set: Set[String]) = set.contains(element.tagName)
   }
 
+  private implicit final class ElementWrap(element: Document#ElementType) {
+    def noChildren = element.children.isEmpty
+    def noSiblings = element.siblings.isEmpty
+    def noOuterText = element.parent.exists(_.text.nonEmpty)
+  }
+
   private implicit final class StrWrap(str: String) {
     def before(sep: String) = StringUtils.substringBefore(str, sep)
   }
@@ -126,8 +132,8 @@ object Condenser {
                                    exclude: Set[String]): String = {
     if (doc.in(exclude))
       ""
-    else if (doc.children.isEmpty)
-      if (doc.siblings.isEmpty && doc.parent.map(_.text).getOrElse("").nonEmpty)
+    else if (doc.noChildren)
+      if (doc.noSiblings && doc.noOuterText)
         doc.parent.get.innerHtml
       else
         doc.outerHtml
