@@ -93,7 +93,7 @@ object Condenser {
   def condenseString(html: String,
                      omitJS: Boolean = true,
                      omitCSS: Boolean = true): String = {
-    condenseJsoup(JsoupBrowser().parseString(html), omitJS, omitCSS)
+    condenseJsoup(JsoupBrowser().parseString(html), omitJS, omitCSS).split("""\n""").map(_.trim).mkString
   }
 
   private def stringSetOnTrue(str: String, cond: Boolean) =
