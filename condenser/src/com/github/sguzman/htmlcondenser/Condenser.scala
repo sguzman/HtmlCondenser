@@ -121,7 +121,7 @@ object Condenser {
   private implicit final class ElementWrap(element: Document#ElementType) {
     def noChildren = element.children.isEmpty
     def noSiblings = element.siblings.isEmpty
-    def noOuterText = element.parent.exists(_.text.nonEmpty)
+    def outerText = element.parent.exists(_.text.nonEmpty)
   }
 
   private implicit final class StrWrap(str: String) {
@@ -133,11 +133,11 @@ object Condenser {
     if (doc.in(exclude))
       ""
     else if (doc.noChildren)
-      if (doc.noSiblings && doc.noOuterText)
+      if (doc.noSiblings && doc.outerText)
         doc.parent.get.innerHtml
       else
         doc.outerHtml
     else
-      s"${doc.outerHtml.before(">")}>${doc.children.map(a => condenseExcludeNodes(a, exclude)).reduce(_ ++ _)}</${doc.tagName}>"
+      s"${doc.outerHtml.before(">")}>${doc.children.map(a => condenseExcludeNodes(a, exclude)).reduce(_ ++ _).trim}</${doc.tagName}>"
   }
 }
