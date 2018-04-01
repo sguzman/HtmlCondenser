@@ -134,10 +134,14 @@ object Condenser {
       ""
     else if (doc.noChildren)
       if (doc.noSiblings && doc.outerText)
-        doc.parent.get.innerHtml
+        ""
       else
         doc.outerHtml
-    else
-      s"${doc.outerHtml.before(">")}>${doc.children.map(a => condenseExcludeNodes(a, exclude)).reduce(_ ++ _).trim}</${doc.tagName}>"
+    else {
+      val inner = doc.children.map(a => condenseExcludeNodes(a, exclude)).reduce(_ ++ _)
+      if (inner.isEmpty) doc.outerHtml
+      else
+        s"${doc.outerHtml.before(">")}>$inner</${doc.tagName}>"
+    }
   }
 }
