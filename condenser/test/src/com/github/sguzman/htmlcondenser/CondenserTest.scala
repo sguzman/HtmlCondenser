@@ -32,4 +32,8 @@ class CondenserTest extends FlatSpec {
   "An HTML condenser" should "condense's facebook's page" in {
     testExample("facebook-03-31-18")
   }
+
+  "An HTML condenser" should "condense a behomoth HTML doc" in {
+    testExample("inline-behomoth")
+  }
 }
