@@ -122,7 +122,7 @@ object Condenser {
       ""
     else if (doc.children.isEmpty)
       if (doc.innerHtml != doc.text)
-        ""
+        doc.text
       else
         doc.outerHtml
     else
