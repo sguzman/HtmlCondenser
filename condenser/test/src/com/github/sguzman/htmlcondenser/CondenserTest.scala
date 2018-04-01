@@ -5,9 +5,9 @@ import org.scalatest.FlatSpec
 import scala.io.Source
 
 class CondenserTest extends FlatSpec {
-  "An HTML condenser" should "remove comments" in {
-    val inputPath = "./condenser/test/resources/comments/comments-input.html"
-    val outputPath = "./condenser/test/resources/comments/comments-output.html"
+  def testExample(name: String): Unit = {
+    val inputPath = s"./condenser/test/resources/$name/$name-input.html"
+    val outputPath = s"./condenser/test/resources/$name/$name-output.html"
 
     val input = Source.fromFile(inputPath).getLines.mkString("\n")
     val actual = Condenser.condenseString(input)
@@ -15,5 +15,13 @@ class CondenserTest extends FlatSpec {
     val output = Source.fromFile(outputPath).getLines.mkString("\n")
 
     assert(actual == output)
+  }
+
+  "An HTML condenser" should "remove comments" in {
+    testExample("comments")
+  }
+
+  "An HTML condenser" should "handle simple input" in {
+    testExample("simple")
   }
 }
