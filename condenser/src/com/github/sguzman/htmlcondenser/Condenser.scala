@@ -15,6 +15,22 @@ package com.github.sguzman.htmlcondenser
   * should be taken while parsing (e.g. omit <script></script> tags,
   * omit <style></style> tags, omit comments)
   * </p>
+  * <p>
+  * HTML documents have the following operations performed on them
+  * automatically:
+  * </p>
+  * <ul>
+  *   <li>Remove comments</li>
+  *   <li>Remove non-significant whitespace</li>
+  * </ul>
+  * <p>
+  * The following operations are treated as optional:
+  * </p>
+  * <ul>
+  *   <li>Remove head node</li>
+  *   <li>Remove style tags</li>
+  *   <li>Remove css tags</li>
+  * </ul>
   *
   * <h2>Exceptional behavior</h2>
   * <p>
@@ -32,5 +48,27 @@ package com.github.sguzman.htmlcondenser
   * @since 1.0.0
   */
 object Condenser {
+  /**
+    * <p>
+    * Given a URL object, the HTML document associated with the address,
+    * will be retrieved and parsed. As with any other public method
+    * declared here, comments are automatically stripped and any none
+    * significant whitespace is stripped
+    * </p>
+    *
+    * @param url       URL to be retrieved
+    *
+    * @param omitJS    should <script></script> tags be omitted?
+    * @param omitCSS   should <style></style> tags be omitted?
+    * @param omitHead  should <head></head> tag be omitted?
+    *
+    * @return          String consisting of condensed HTML
+    *
+    * @see             Condenser
+    * @since           1.0.0
+    */
+  def condenseURL(url: URL, omitJS: Boolean = true, omitCSS: Boolean = true, omitHead: Boolean = true): String = {
+    condenseString(Http(url.toString).asString.body, omitJS, omitCSS, omitHead)
+  }
 
 }
