@@ -111,11 +111,10 @@ object Condenser {
   private def condenseJsoup(doc: Browser#DocumentType,
                                  omitJS: Boolean = true,
                                  omitCSS: Boolean = true,
-                                 omitHead: Boolean = true) = {
-    "<html>" ++ condenseExcludeNodes(doc.body,
+                                 omitHead: Boolean = true) =
+    "<html><body>" ++ condenseExcludeNodes(doc.body,
       setFromStringBools(List(("script", omitJS), ("style", omitCSS), ("head", omitHead)))
-    ) ++ "</html>"
-  }
+    ) ++ "</body></html>"
 
   private implicit final class DocWrap(element: Document#ElementType) {
     def in(set: Set[String]) = set.contains(element.tagName)
@@ -126,7 +125,10 @@ object Condenser {
     if (doc.in(exclude))
       ""
     else if (doc.children.isEmpty)
-      doc.outerHtml
+      if (doc.innerHtml != doc.text)
+        ""
+      else
+        doc.outerHtml
     else
       doc.children.map(a => condenseExcludeNodes(a, exclude).trim).reduce(_ ++ _).trim
   }
