@@ -130,6 +130,6 @@ object Condenser {
       else
         doc.outerHtml
     else
-      doc.children.map(a => condenseExcludeNodes(a, exclude).trim).reduce(_ ++ _).trim
+      doc.children.map(a => condenseExcludeNodes(a, exclude)).reduce(_ ++ _)
   }
 }
