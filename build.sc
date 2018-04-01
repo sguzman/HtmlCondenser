@@ -72,7 +72,7 @@ object condenser extends PublishModule {
 
   /** Ivy dependencies */
   def ivyDeps = Agg(
-    ivy"com.outr::scribe:2.2.1"
+    ivy"com.outr::scribe:2.3.2"
   )
 
   def forkArgs = Seq("-Xmx4g")
