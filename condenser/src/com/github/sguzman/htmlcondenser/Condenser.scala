@@ -123,7 +123,7 @@ object Condenser {
       ""
     else if (doc.children.isEmpty)
       if (doc.innerHtml != doc.text)
-        doc.text
+        s"<${doc.tagName}>${doc.text}</${doc.tagName}>"
       else
         doc.outerHtml
     else
