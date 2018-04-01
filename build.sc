@@ -20,6 +20,9 @@ object condenser extends PublishModule {
     )
   )
 
+  /** Define main */
+  def mainClass = Some("com.github.sguzman.htmlcondenser.CondenserDriver")
+
   /** Custom task to clean out/condenser */
   def clean() = T.command{
     def delete(file: File): Unit = {
