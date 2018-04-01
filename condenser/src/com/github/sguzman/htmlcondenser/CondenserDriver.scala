@@ -7,7 +7,7 @@ import scala.io.Source
   */
 object CondenserDriver {
   def main(args: Array[String]): Unit = {
-    val path = "/Users/salvadorguzman/Software/scala/HtmlCondenser/condenser/test/resources/comments/comments-input.html"
+    val path = "/Users/salvadorguzman/Software/scala/HtmlCondenser/condenser/test/resources/github-html5-template/github-html5-template-input.html"
     val html = Source.fromFile(path).getLines.mkString("\n")
     val condensed = Condenser.condenseString(html)
 
