@@ -4,6 +4,7 @@ import java.net.URL
 
 import net.ruippeixotog.scalascraper.browser.{Browser, JsoupBrowser}
 import net.ruippeixotog.scalascraper.model.Document
+import org.apache.commons.lang3.StringUtils
 import scalaj.http.Http
 
 /**
@@ -117,16 +118,20 @@ object Condenser {
     def in(set: Set[String]) = set.contains(element.tagName)
   }
 
+  private implicit final class StrWrap(str: String) {
+    def before(sep: String) = StringUtils.substringBefore(str, sep)
+  }
+
   private def condenseExcludeNodes(doc: Document#ElementType,
                                    exclude: Set[String]): String = {
     if (doc.in(exclude))
       ""
     else if (doc.children.isEmpty)
       if (doc.innerHtml != doc.text)
-        s"<${doc.tagName}>${doc.text}</${doc.tagName}>"
+        s"${doc.outerHtml.before(">")}>${doc.text}</${doc.tagName}>"
       else
         doc.outerHtml
     else
-      doc.children.map(a => condenseExcludeNodes(a, exclude)).reduce(_ ++ _)
+      s"${doc.outerHtml.before(">")}>${doc.children.map(a => condenseExcludeNodes(a, exclude)).reduce(_ ++ _)}</${doc.tagName}>"
   }
 }
