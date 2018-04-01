@@ -127,10 +127,7 @@ object Condenser {
     if (doc.in(exclude))
       ""
     else if (doc.children.isEmpty)
-      if (doc.innerHtml != doc.text)
-        s"${doc.outerHtml.before(">")}>${doc.text}</${doc.tagName}>"
-      else
-        doc.outerHtml
+      doc.outerHtml
     else
       s"${doc.outerHtml.before(">")}>${doc.children.map(a => condenseExcludeNodes(a, exclude)).reduce(_ ++ _)}</${doc.tagName}>"
   }
