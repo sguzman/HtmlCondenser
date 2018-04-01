@@ -55,6 +55,11 @@ import scalaj.http.Http
   *   Note that currently any HTML elements in comments will also be removed since
   *   its considered optional elements.
   * </p>
+  * <p>
+  * <p>
+  *   Ideally, the operation `condense` which is performed here should be idempotent.
+  *   If the output of the operation is passed again as input, it should match the input.
+  * </p>
   *
   * @author Salvador Guzman (guzmansalv@gmail.com)
   * @since 1.0.0
