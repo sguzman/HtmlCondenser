@@ -121,7 +121,7 @@ object Condenser {
     if (doc.in(exclude))
       ""
     else if (doc.children.isEmpty)
-      ""
+      doc.outerHtml
     else
       doc.children.map(a => condenseExcludeNodes(a, exclude).trim).reduce(_ ++ _).trim
   }
