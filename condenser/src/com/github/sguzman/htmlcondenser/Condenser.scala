@@ -1,5 +1,11 @@
 package com.github.sguzman.htmlcondenser
 
+import java.net.URL
+
+import net.ruippeixotog.scalascraper.browser.{Browser, JsoupBrowser}
+import net.ruippeixotog.scalascraper.model.Document
+import scalaj.http.Http
+
 /**
   * <h1>HtmlCondenser Class</h1>
   * <p>
@@ -71,4 +77,39 @@ object Condenser {
     condenseString(Http(url.toString).asString.body, omitJS, omitCSS, omitHead)
   }
 
+  def condenseString(html: String, omitJS: Boolean = true, omitCSS: Boolean = true, omitHead: Boolean = true): String = {
+    condenseJsoup(JsoupBrowser().parseString(html), omitJS, omitCSS, omitCSS)
+  }
+
+  private def stringSetOnTrue(str: String, cond: Boolean) =
+    if (cond)
+      Set(str)
+    else
+      Set.empty[String]
+
+
+  private def condenseJsoup(doc: Browser#DocumentType,
+                                 omitJS: Boolean = true,
+                                 omitCSS: Boolean = true,
+                                 omitHead: Boolean = true) = {
+    condenseExcludeNodes(doc.body,
+      stringSetOnTrue("style", omitJS) ++
+        stringSetOnTrue("style", omitCSS) ++
+      stringSetOnTrue("head", omitHead)
+    )
+  }
+
+  private implicit final class DocWrap(element: Document#ElementType) {
+    def in(set: Set[String]) = set.contains(element.tagName)
+  }
+
+  private def condenseExcludeNodes(doc: Document#ElementType,
+                                   exclude: Set[String]): String = {
+    if (doc.in(exclude))
+      ""
+    else if (doc.children.isEmpty)
+      doc.innerHtml
+    else
+      doc.children.map(a => condenseExcludeNodes(a, exclude)).reduce(_ ++ _)
+  }
 }
