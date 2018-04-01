@@ -118,6 +118,6 @@ object Condenser {
     else if (doc.children.isEmpty)
       ""
     else
-      doc.children.map(a => condenseExcludeNodes(a, exclude)).reduce(_ ++ _)
+      doc.children.map(a => condenseExcludeNodes(a, exclude).trim).reduce(_ ++ _).trim
   }
 }
