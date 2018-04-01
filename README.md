@@ -1,5 +1,4 @@
 # HtmlCondenser
-While working on a web scraping project, I ran into issues when caching HTTP responses. The html was not minified and contained superfluous nodes such as &lt;script> and &lt;style>. This project is an attempt to make HTML documents more cacheable friendly
 
 ![A scala project](https://i.imgur.com/vBOMoBu.png)
 
@@ -10,3 +9,6 @@ While working on a web scraping project, I ran into issues when caching HTTP res
 [![HitCount](http://hits.dwyl.io/sguzman/HtmlCondenser.svg)](http://hits.dwyl.io/sguzman/HtmlCondenser)
 ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
+
+###Summary
+While working on a web scraping project, I ran into issues when caching HTTP responses. The html was not minified and contained superfluous nodes such as &lt;script> and &lt;style>. This project is an attempt to make HTML documents more cacheable friendly
