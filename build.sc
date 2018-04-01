@@ -72,7 +72,8 @@ object condenser extends PublishModule {
 
   /** Ivy dependencies */
   def ivyDeps = Agg(
-    ivy"com.outr::scribe:2.3.2"
+    ivy"com.outr::scribe:2.3.2",
+    ivy"net.ruippeixotog::scala-scraper:2.1.0"
   )
 
   def forkArgs = Seq("-Xmx4g")
