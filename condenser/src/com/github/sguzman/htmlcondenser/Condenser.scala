@@ -94,7 +94,7 @@ object Condenser {
     else
       Set.empty[String]
 
-  private def setFromStringBools(values: Seq[(String, Boolean)) =
+  private def setFromStringBools(values: Seq[(String, Boolean)]) =
     values.map(a => stringSetOnTrue(a._1, a._2)).reduce(_ ++ _)
 
 
