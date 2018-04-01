@@ -108,7 +108,8 @@ object Condenser {
   private def condenseJsoup(doc: Browser#DocumentType,
                                  omitJS: Boolean = true,
                                  omitCSS: Boolean = true) =
-    "<html><body>" ++ condenseExcludeNodes(doc.body,
+    if (doc.body.children.isEmpty) "<html><body></body></html>"
+    else "<html><body>" ++ condenseExcludeNodes(doc.body,
       setFromStringBools(List(("script", omitJS), ("style", omitCSS)))
     ) ++ "</body></html>"
 
